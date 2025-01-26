@@ -3,38 +3,33 @@ import customtkinter
 class StudentDetails(customtkinter.CTkFrame):
     def __init__(self, master):
         super().__init__(master)
-    
-        first_name = customtkinter.CTkEntry(self, placeholder_text="First name", width = 180)
-        first_name.grid(row = 1, column = 0, padx = 10, pady = 20)
-
-        middle_name = customtkinter.CTkEntry(self, placeholder_text="Middle name (optional)", width = 180)
-        middle_name.grid(row = 1, column = 1, padx = 10, pady = 20)
+        self.stu_det = ["First name", "Middle name (optional)", " Surname", "Examination number"]
         
-        sur_name = customtkinter.CTkEntry(self, placeholder_text="Surname", width = 180)
-        sur_name.grid(row = 1, column = 2, padx = 10, pady = 20)
+        col_count = 1 
         
-        exam_number = customtkinter.CTkEntry(self, placeholder_text="Examination Number", width = 180)
-        exam_number.grid(row = 1, column = 3, padx = 10, pady = 20)
+        for detail in self.stu_det:
+            first_name = customtkinter.CTkEntry(self, placeholder_text = detail, width = 180)
+            first_name.grid(row = 1, column = col_count, padx = 10, pady = 20)
+            col_count = col_count + 1
 
 
-class CourseDetails(customtkinter.CTkFrame):
+class CourseDetails(customtkinter.CTkScrollableFrame):
     def __init__(self, master):
         super().__init__(master)
-    
-        course = customtkinter.CTkLabel(self, text = "Course", width = 100)
-        course.grid(row = 2, column = 0, padx = 10, pady = 20, sticky="nsew")
+        self.cou_det = ["Course", "Subject title", "Mark obtained", "Grade", "Remarks"]
         
-        title = customtkinter.CTkLabel(self, text = "Subject Title", width = 100)
-        title.grid(row = 2, column = 1, padx = 10, pady = 20, sticky="nsew")
+        col_count = 1 
         
-        marks = customtkinter.CTkLabel(self, text = "Mark Obtained", width = 100)
-        marks.grid(row = 2, column = 2, padx = 10, pady = 20, sticky="nsew")
+        for detail in self.cou_det:
+            course = customtkinter.CTkLabel(self, text = detail)
+            course.grid(row = 2, column = col_count, padx = 10, pady = 20, sticky="nsew")
+            col_count = col_count + 1
+            
+        for x in range(7):
+            for y in range(len(self.cou_det)):
+                new_entry = customtkinter.CTkEntry(self, width = 130)
+                new_entry.grid(row = 3 + x, column = y + 1, padx = 10, pady = 20, sticky="nsew")
         
-        grade = customtkinter.CTkLabel(self, text = "Grade", width = 100)
-        grade.grid(row = 2, column = 3, padx = 10, pady = 20, sticky="nsew")
-        
-        remark = customtkinter.CTkLabel(self, text = "Remarks", width = 100)
-        remark.grid(row = 2, column = 4, padx = 10, pady = 20, sticky="nsew")  
         
 class App(customtkinter.CTk):
     def __init__(self):
@@ -45,7 +40,7 @@ class App(customtkinter.CTk):
         customtkinter.set_default_color_theme("dark-blue")  # Themes: "blue" (standard), "green", "dark-blue"
         
         self.StudentDetails = StudentDetails(self)
-        self.StudentDetails.grid(row=1, column=0, padx=0, pady=(10, 0), sticky="e")
+        self.StudentDetails.grid(row=1, column=0, padx=0, pady=(0, 10), sticky="nsew")
         
         self.CourseDetails = CourseDetails(self)
         self.CourseDetails.grid(row=2, column=0, padx=10, pady=(10, 0), sticky="nsew")
