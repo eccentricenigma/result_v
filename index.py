@@ -18,6 +18,10 @@ class CourseDetails(customtkinter.CTkScrollableFrame):
         super().__init__(master)
         self.cou_det = ["Course", "Subject title", "Mark obtained", "Grade", "Remarks"]
         
+        # def boxg():
+        #     if grade.get() == "A":
+        #         return("Passed")
+            
         col_count = 1 
         
         for detail in self.cou_det:
@@ -27,10 +31,14 @@ class CourseDetails(customtkinter.CTkScrollableFrame):
             
         for x in range(7):
             for y in range(len(self.cou_det)):
-                new_entry = customtkinter.CTkEntry(self, width = 130)
-                new_entry.grid(row = 3 + x, column = y + 1, padx = 10, pady = 20, sticky="nsew")
-        
-        
+                if y == 3:
+                    grade = customtkinter.CTkComboBox(self, values = ["Select grade", "A", "B", "C", "D"])
+                    grade.grid(row = 3 + x, column = y + 1, padx = 10, pady = 20, sticky="nsew")
+                else:
+                    new_entry = customtkinter.CTkEntry(self, width = 130)
+                    new_entry.grid(row = 3 + x, column = y + 1, padx = 10, pady = 20, sticky="nsew")
+
+              
 class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
