@@ -1,62 +1,53 @@
 import customtkinter
-
-class StudentDetails(customtkinter.CTkFrame):
-    def __init__(self, master):
-        super().__init__(master)
-        self.stu_det = ["First name", "Middle name (optional)", " Surname", "Examination number"]
-        
-        col_count = 1 
-        
-        for detail in self.stu_det:
-            first_name = customtkinter.CTkEntry(self, placeholder_text = detail, width = 180)
-            first_name.grid(row = 1, column = col_count, padx = 10, pady = 20)
-            col_count = col_count + 1
-
-
-class CourseDetails(customtkinter.CTkScrollableFrame):
-    def __init__(self, master):
-        super().__init__(master)
-        self.cou_det = ["Course", "Subject title", "Mark obtained", "Grade", "Remarks"]
-        
-        # def boxg():
-        #     if grade.get() == "A":
-        #         return("Passed")
-            
-        col_count = 1 
-        
-        for detail in self.cou_det:
-            course = customtkinter.CTkLabel(self, text = detail)
-            course.grid(row = 2, column = col_count, padx = 10, pady = 20, sticky="nsew")
-            col_count = col_count + 1
-            
-        for x in range(7):
-            for y in range(len(self.cou_det)):
-                if y == 3:
-                    grade = customtkinter.CTkComboBox(self, values = ["Select grade", "A", "B", "C", "D"])
-                    grade.grid(row = 3 + x, column = y + 1, padx = 10, pady = 20, sticky="nsew")
-                else:
-                    new_entry = customtkinter.CTkEntry(self, width = 130)
-                    new_entry.grid(row = 3 + x, column = y + 1, padx = 10, pady = 20, sticky="nsew")
-
-              
+from add_courses import CourseDetails
+from add_student import StudentDetails
+                   
+                
 class App(customtkinter.CTk):
     def __init__(self):
-        super().__init__()
-        self.geometry("800x600")
+        super().__init__()  
+        self.geometry("600x400")
+        self.resizable(0, 0)
         self.title("Result")
+        self.grid_columnconfigure(3, weight = 3)
+        
         customtkinter.set_appearance_mode("light")
         customtkinter.set_default_color_theme("dark-blue")  # Themes: "blue" (standard), "green", "dark-blue"
         
-        self.StudentDetails = StudentDetails(self)
-        self.StudentDetails.grid(row=1, column=0, padx=0, pady=(0, 10), sticky="nsew")
+        welcome = customtkinter.CTkLabel(self, text = "Welcome")
+        welcome.grid(row = 0, column = 3, padx = 20, pady = 20, sticky = "nsew")
         
-        self.CourseDetails = CourseDetails(self)
-        self.CourseDetails.grid(row=2, column=0, padx=10, pady=(10, 0), sticky="nsew")
+        add_courses = customtkinter.CTkButton(self, text = "Add Courses", command = self.open_courses)
+        add_courses.grid(row = 1, column = 3, padx = 10, pady = 10)
         
+        add_students = customtkinter.CTkButton(self, text = "Add Students", command = self.open_students)
+        add_students.grid(row = 2, column = 3, padx = 10, pady = 10)
         
-        add_rec = customtkinter.CTkButton(self, text = "Add record")
-        add_rec.grid(row = 7, column = 0, padx = 10, pady = 20)
+        add_rec = customtkinter.CTkButton(self, text = "Add Record", command = self.open_records)
+        add_rec.grid(row = 3, column = 3, padx = 10, pady = 10)
+       
+        self.toplevel_window = None
         
+    def open_courses(self):
+        if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
+            self.toplevel_window = CourseDetails(self)
+            self.toplevel_window.focus()
+        else:
+            self.toplevel_window.focus()
         
+    def open_students(self):
+        if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
+            self.toplevel_window = StudentDetails()
+            self.toplevel_window.focus()
+        else:
+            self.toplevel_window.focus()
+        
+    def open_records(self):
+        if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
+            print("Not yet ready")
+        #     self.toplevel_window = Records(self)
+        # else:
+        #     self.toplevel_window.focus()
+            
 app = App()
 app.mainloop()
