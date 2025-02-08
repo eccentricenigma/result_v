@@ -1,8 +1,8 @@
 import customtkinter
 
 class StudentDetails(customtkinter.CTkToplevel):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, master):
+        super().__init__(master)
         self.title("Add Student")
         self.state("zoomed")
         # self.columnconfigure(0, weight = 1)

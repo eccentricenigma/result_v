@@ -1,4 +1,10 @@
 import customtkinter
+import sqlite3
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+#SQLITE IS A TEST!!! CHANGE IT!!! AS SOON AS POSSIBLE!!!
 
 class CourseDetails(customtkinter.CTkToplevel):
     def __init__(self, master):
@@ -8,6 +14,12 @@ class CourseDetails(customtkinter.CTkToplevel):
         self.resizable(0, 0)
         self.geometry("800x800")
         self.cou_det = ["Course", "Subject title"]
+        self.entries = []
+        
+        # Database connection
+        self.conn = sqlite3.connect(os.getenv('DATABASE'))
+        self.cursor = self.conn.cursor()
+        self.create_table()
         
         label = customtkinter.CTkLabel(self, 
                                        text = "PLEASE FILL IN THE GIVEN SPACES ACCURATELY WITH THE COURSES",
@@ -21,9 +33,42 @@ class CourseDetails(customtkinter.CTkToplevel):
         label.grid(row = 1, column = 1, padx = 25, pady = 15, sticky="nsew")
             
         for x in range(10):
+            row_entries = []
             for y in range(2):
                 new_entry = customtkinter.CTkEntry(self, width = 350)
                 new_entry.grid(row = x + 2, column = y, padx = 25, pady = 15, sticky="nsew")
+                row_entries.append(new_entry)
+            self.entries.append(row_entries)
         
-        add_rec = customtkinter.CTkButton(self, text = "Add Courses")
+        add_rec = customtkinter.CTkButton(self, text = "Add Courses", command = self.save_data)
         add_rec.grid(row = 12, column = 0, columnspan = 2, padx = 25, pady = 15, sticky = "nsew")
+
+
+    def create_table(self):
+        """Create the SQLite table if it doesn't exist"""
+        self.cursor.execute("""
+            CREATE TABLE IF NOT EXISTS courses (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                course TEXT,
+                subject TEXT
+            )
+        """)
+        self.conn.commit()
+        
+    def save_data(self):
+        #Retrieve data from widgets and insert into the database
+        for row_entries in self.entries:
+            course = row_entries[0].get()
+            subject = row_entries[1].get()
+            # Insert into SQLite database
+            if not course or subject:
+                print("Empty entries")
+            else:
+                self.cursor.execute("""
+                    INSERT INTO courses (course, subject) 
+                    VALUES (?, ?)
+                """, (course, subject))
+                print("Data saved successfully!")
+        self.conn.commit()
+        
+
