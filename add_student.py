@@ -65,14 +65,19 @@ class StudentDetails(customtkinter.CTkToplevel):
             examination_number = row_entries[3].get()
             
             # Insert into SQLite database
-            if not first_name and not sur_name:
+            if not (first_name and sur_name):
                 print("Incomplete Name")
             elif not examination_number:
                 print("No examination number")
             else:
-                self.cursor.execute("""
-                    INSERT INTO students (first_name, middle_name, sur_name, examination_number) 
-                    VALUES (?, ?, ?, ?)
-                """, (first_name, middle_name, sur_name, examination_number))
-                print("Data saved successfully!")
+                try:
+                    self.cursor.execute("""
+                        INSERT INTO students (first_name, middle_name, sur_name, examination_number) 
+                        VALUES (?, ?, ?, ?)
+                    """, (first_name, middle_name, sur_name, examination_number))
+                    print("Data saved successfully!")
+                except sqlite3.IntegrityError as i:
+                    print("Integrity error i.e value error", i)
+                except sqlite3.OperationalError as o:
+                    print("Operational error i.e schema error", o)
         self.conn.commit()
