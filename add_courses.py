@@ -13,7 +13,6 @@ class CourseDetails(customtkinter.CTkToplevel):
         # self.state("zoomed")
         self.resizable(0, 0)
         self.geometry("800x800")
-        self.cou_det = ["Course", "Subject title"]
         self.entries = []
         
         # Database connection
@@ -49,8 +48,8 @@ class CourseDetails(customtkinter.CTkToplevel):
         self.cursor.execute("""
             CREATE TABLE IF NOT EXISTS courses (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                course TEXT,
-                subject TEXT
+                course VARCHAR(20) NOT NULL CHECK(course <> ""),
+                subject VARCHAR(20) NOT NULL CHECK(subject <> "")
             )
         """)
         self.conn.commit()
@@ -61,14 +60,19 @@ class CourseDetails(customtkinter.CTkToplevel):
             course = row_entries[0].get()
             subject = row_entries[1].get()
             # Insert into SQLite database
-            if not course or subject:
+            if not (course and subject):
                 print("Empty entries")
             else:
-                self.cursor.execute("""
-                    INSERT INTO courses (course, subject) 
-                    VALUES (?, ?)
-                """, (course, subject))
-                print("Data saved successfully!")
+                try:
+                    self.cursor.execute("""
+                        INSERT INTO courses (course, subject) 
+                        VALUES (?, ?)
+                    """, (course, subject))
+                    print("Data saved successfully!")
+                except sqlite3.IntegrityError as i:
+                    print("Integrity error i.e value error", i)
+                except sqlite3.OperationalError as o:
+                    print("Operational error i.e schema error", o)
         self.conn.commit()
         
 
