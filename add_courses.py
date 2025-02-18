@@ -10,31 +10,36 @@ class CourseDetails(customtkinter.CTkToplevel):
     def __init__(self, master):
         super().__init__(master)
         self.title("Add Course")
-        # self.state("zoomed")
+        self.state("zoomed")
         self.resizable(0, 0)
         self.geometry("800x800")
         self.entries = []
-        
+        self.grid_columnconfigure((0,1), weight=1)
+
         # Database connection
         self.conn = sqlite3.connect(os.getenv('DATABASE'))
         self.cursor = self.conn.cursor()
         self.create_table()
-        
+                
         label = customtkinter.CTkLabel(self, 
                                        text = "PLEASE FILL IN THE GIVEN SPACES ACCURATELY WITH THE COURSES",
-                                       font = ("Times", 20))
+                                       font = ("Times", 20, "bold"))
         label.grid(row = 0, column = 0, columnspan = 2, padx = 50, pady = 15, sticky = "nsew")
         
-        label = customtkinter.CTkLabel(self, text = "Course")
+        label = customtkinter.CTkLabel(self, 
+                                       text = "Course",
+                                       font = ("Times", 20, "bold"))
         label.grid(row = 1, column = 0, padx = 25, pady = 15, sticky="nsew")
         
-        label = customtkinter.CTkLabel(self, text = "Subject Title")
+        label = customtkinter.CTkLabel(self, 
+                                       text = "Subject Title",
+                                       font = ("Times", 20, "bold"))
         label.grid(row = 1, column = 1, padx = 25, pady = 15, sticky="nsew")
             
         for x in range(10):
             row_entries = []
             for y in range(2):
-                new_entry = customtkinter.CTkEntry(self, width = 350)
+                new_entry = customtkinter.CTkEntry(self)
                 new_entry.grid(row = x + 2, column = y, padx = 25, pady = 15, sticky="nsew")
                 row_entries.append(new_entry)
             self.entries.append(row_entries)
