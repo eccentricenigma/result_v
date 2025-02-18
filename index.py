@@ -1,6 +1,7 @@
 import customtkinter
 from add_courses import CourseDetails
 from add_student import StudentDetails
+from add_grades import AddGrades
 
 class SideBar(customtkinter.CTkFrame):
     def __init__(self, master, **kwargs):
@@ -23,6 +24,12 @@ class SideBar(customtkinter.CTkFrame):
                                                command = self.open_students)
         add_students.grid(row = 2, column = 0, padx = 10, pady = 20)
         
+        add_grades = customtkinter.CTkButton(self, 
+                                               text = "Add Grades", 
+                                               
+                                               command = self.open_grades)
+        add_grades.grid(row = 3, column = 0, padx = 10, pady = 20)
+        
         logout = customtkinter.CTkButton(self, 
                                          text = "Log Out",
                                          fg_color = "red", 
@@ -40,6 +47,12 @@ class SideBar(customtkinter.CTkFrame):
     def open_students(self):
         if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
             self.toplevel_window = StudentDetails(self)
+        else:
+            self.toplevel_window.focus()
+            
+    def open_grades(self):
+        if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
+            self.toplevel_window = AddGrades(self)
         else:
             self.toplevel_window.focus()
                                 
