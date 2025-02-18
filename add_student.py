@@ -18,18 +18,21 @@ class StudentDetails(customtkinter.CTkToplevel):
         self.cursor = self.conn.cursor()
         self.create_table()
         
+        self.students = ["First name", "Middle name (optional)", " Surname", "Examination number"]
+        
+        for col in range(len(self.students)):
+            self.grid_columnconfigure(col, weight=1)
+            
         label = customtkinter.CTkLabel(self, 
                                        text = "PLEASE FILL IN THE GIVEN SPACES ACCURATELY WITH THE STUDENT'S DATA",
                                        font = ("Times", 20))
         label.grid(row = 0, column = 1, columnspan = 2, padx = 10, pady = 20, sticky = "nsew")
-        
-        self.stu_det = ["First name", "Middle name (optional)", " Surname", "Examination number"]
-        
+
         for x in range(10):
             row_entries = []
-            for y in range(len(self.stu_det)):
+            for y in range(len(self.students)):
                 details = customtkinter.CTkEntry(self, 
-                                                 placeholder_text = self.stu_det[y], 
+                                                 placeholder_text = self.students[y], 
                                                  width = 300)
                 details.grid(row = x + 1, column = y, padx = 35, pady = 15)
                 row_entries.append(details)
