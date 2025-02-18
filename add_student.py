@@ -25,7 +25,7 @@ class StudentDetails(customtkinter.CTkToplevel):
             
         label = customtkinter.CTkLabel(self, 
                                        text = "PLEASE FILL IN THE GIVEN SPACES ACCURATELY WITH THE STUDENT'S DATA",
-                                       font = ("Times", 20))
+                                       font = ("Times", 20, "bold"))
         label.grid(row = 0, column = 1, columnspan = 2, padx = 10, pady = 20, sticky = "nsew")
 
         for x in range(10):
